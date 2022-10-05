@@ -1,6 +1,9 @@
-from read import circleMaker as cm
+from circleDrawer import circleMaker as cm, circleMaker
 import cv2 as cv
 
-img = cv.imread('dog2.jpg')
-position = (img.shape[1]//2,img.shape[0]//2)
-cm.make_dot(img,position)
+img = cv.imread('dog.jpg', 1)
+temp = circleMaker(img)
+cv.imshow('image', img)
+cv.setMouseCallback('image', temp.click_event)
+cv.waitKey(0)
+cv.destroyAllWindows()

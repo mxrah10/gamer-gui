@@ -1,4 +1,4 @@
-from circleDrawer import circleMaker as cm, circleMaker
+from circleDrawer import circleMaker
 import cv2 as cv
 
 img = cv.imread('dog.jpg', 1)

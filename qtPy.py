@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QTextEdit
 class MainWindow(QMainWindow):
     def __init__(self, img):
         super().__init__()
+        self.img = img
         self.label = QLabel(self)
         self.pixmap = QPixmap(self.convert_cv_qt(img))
         self.pixmap_resized = self.pixmap.scaled(720, 405, QtCore.Qt.KeepAspectRatio)
@@ -21,17 +22,19 @@ class MainWindow(QMainWindow):
         self.resize(self.pixmap.width()/4, self.pixmap.height()/4)
 
     def mousePressEvent(self, e):
-        print((e.x(), e.y()))
-        canvas = self.label.pixmap()
-        painter = QtGui.QPainter(canvas)
-        pen = QtGui.QPen()
-        pen.setWidth(3)
-        pen.setColor(QtGui.QColor("red"))
-        painter.setPen(pen)
-        painter.drawRoundedRect(e.x(), e.y(), 10, 10, 100, 100)
-        painter.end()
-        self.label.setPixmap(canvas)
+        self.x = e.x()
+        self.y = e.y()
+        print(self.x, self.y)
+        self.setHSV()
         return (e.x(), e.y())
+
+    def setHSV(self):
+        colorsB = self.img[self.y, self.x, 0]
+        colorsG = self.img[self.y, self.x, 1]
+        colorsR = self.img[self.y, self.x, 2]
+        hsv_value = np.uint8([[[colorsB, colorsG, colorsR]]])
+        self.hsv = cv.cvtColor(hsv_value, cv.COLOR_BGR2HSV)
+        print(self.hsv)
 
     def convert_cv_qt(self, img):
         """Convert from an opencv image to QPixmap"""
@@ -53,7 +56,7 @@ class MainWindow(QMainWindow):
 
 app = QApplication(sys.argv)
 
-img = cv.imread('dog.jpg')
+img = cv.imread('blitzkrieg.png')
 
 window = MainWindow(img)
 window.show()

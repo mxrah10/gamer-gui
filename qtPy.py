@@ -82,6 +82,7 @@ class MainWindow(QMainWindow):
                 self.setImage(img)
                 cv.waitKey(0)
 
+
     def convert_cv_qt(self):
         """Convert from an opencv image to QPixmap"""
         self.height, self.width, channel = self.img.shape
